@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".ViewOrders">
         </activity>
+        <activity android:name=".AddOrder">
+        </activity>
     </application>
 
 </manifest>
