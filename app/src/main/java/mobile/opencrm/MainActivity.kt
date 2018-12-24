@@ -1,5 +1,6 @@
 package mobile.opencrm
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
@@ -42,5 +43,12 @@ class MainActivity : AppCompatActivity() {
     fun toastMe(view: View) {
         val myToast = Toast.makeText(this, "Login Success!", Toast.LENGTH_SHORT)
         myToast.show();
+        goToOrderScreen()
+    }
+
+    fun goToOrderScreen() {
+        val orderIntent = Intent(this, ViewOrders::class.java)
+
+        startActivity(orderIntent);
     }
 }
