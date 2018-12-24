@@ -8,7 +8,7 @@
         tools:context=".AddOrder">
 
     <TextView
-            android:text="New Order"
+            android:text="@string/new_order"
             android:layout_width="131dp"
             android:layout_height="38dp"
             android:id="@+id/textAddOrderHeading" android:textSize="24sp"
@@ -19,7 +19,7 @@
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
             app:layout_constraintHorizontal_bias="0.033" app:layout_constraintVertical_bias="0.017"/>
     <TextView
-            android:text="Status"
+            android:text="@string/status"
             android:layout_width="113dp"
             android:layout_height="44dp"
             android:id="@+id/textStatus" android:textSize="18sp"
@@ -42,7 +42,7 @@
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
             app:layout_constraintHorizontal_bias="0.908"/>
     <TextView
-            android:text="Cost"
+            android:text="@string/cost"
             android:layout_width="113dp"
             android:layout_height="44dp"
             android:id="@+id/textCost" android:textSize="18sp"
@@ -65,7 +65,7 @@
             app:layout_constraintHorizontal_bias="0.908" app:layout_constraintVertical_bias="0.398"
             app:layout_constraintStart_toStartOf="parent"/>
     <TextView
-            android:text="Salesman"
+            android:text="@string/salesman"
             android:layout_width="113dp"
             android:layout_height="44dp"
             android:id="@+id/textSalesman" android:textSize="18sp"
@@ -89,7 +89,7 @@
             app:layout_constraintVertical_bias="0.273" app:layout_constraintStart_toStartOf="parent"/>
     <EditText
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:inputType="text"
             android:ems="10"
             android:id="@+id/editCustomer"
@@ -100,7 +100,7 @@
             android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp"
             app:layout_constraintHorizontal_bias="0.882"/>
     <TextView
-            android:text="Customer"
+            android:text="@string/customer"
             android:layout_width="113dp"
             android:layout_height="44dp"
             android:id="@+id/textCustomer" android:textSize="18sp"
@@ -111,7 +111,7 @@
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp"
             app:layout_constraintHorizontal_bias="0.031" app:layout_constraintVertical_bias="0.175"/>
     <Button
-            android:text="Add Order"
+            android:text="@string/add_order"
             android:layout_width="214dp"
             android:layout_height="45dp"
             android:onClick="ToastAddOrder"

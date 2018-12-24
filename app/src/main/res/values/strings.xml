@@ -4,4 +4,10 @@
     <string name="login">Login</string>
     <string name="name">Name</string>
     <string name="view_orders">View Orders</string>
+    <string name="new_order">New Order</string>
+    <string name="add_order">Add Order</string>
+    <string name="customer">Customer</string>
+    <string name="salesman">Salesman</string>
+    <string name="cost">Cost</string>
+    <string name="status">Status</string>
 </resources>
