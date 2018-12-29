@@ -31,10 +31,6 @@ class AddOrder : AppCompatActivity() {
         }
     }
 
-  //  fun ToastAddOrder(view: View) {
-//      someTask(this).execute();
-    //}
-
     @SuppressLint("StaticFieldLeak")
     class someTask(private var addOrder: AddOrder?) : AsyncTask<String, String, String>() {
 

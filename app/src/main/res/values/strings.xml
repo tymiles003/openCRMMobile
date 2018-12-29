@@ -10,4 +10,8 @@
     <string name="salesman">Salesman</string>
     <string name="cost">Cost</string>
     <string name="status">Status</string>
+    <string name="column_1">Order No.</string>
+    <string name="column_2">Customer</string>
+    <string name="column_3">Salesman</string>
+    <string name="column_4">Cost</string>
 </resources>
