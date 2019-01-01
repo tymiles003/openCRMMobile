@@ -14,4 +14,5 @@
     <string name="column_2">Customer</string>
     <string name="column_3">Salesman</string>
     <string name="column_4">Cost</string>
+    <string name="column_5">Status</string>
 </resources>

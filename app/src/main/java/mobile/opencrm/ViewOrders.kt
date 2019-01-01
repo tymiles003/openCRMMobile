@@ -101,11 +101,13 @@ class ViewOrders : AppCompatActivity() {
 
         for(j in 0 until cols) {
             val rcHeader = TextView(this);
+            /*rcHeader.width = 25*/
             when (j) {
                 0 -> rcHeader.text = getString(R.string.column_1)
                 1 -> rcHeader.text = getString(R.string.column_2)
                 2 -> rcHeader.text = getString(R.string.column_3)
                 3 -> rcHeader.text = getString(R.string.column_4)
+                3 -> rcHeader.text = getString(R.string.column_5)
             }
             row.addView(rcHeader);
         }
@@ -168,7 +170,7 @@ class ViewOrders : AppCompatActivity() {
                     }
                 }
             } catch (ex: Exception) {
-                Log.d("", "Error in doInBackground " + ex.message)
+                Log.d(viewOrders?.tag, "Error in doInBackground " + ex.message)
             }
 
             return result
@@ -185,7 +187,8 @@ class ViewOrders : AppCompatActivity() {
                 Log.i(viewOrders?.tag, "Try in onPostExecute String : $result")
                 var jsonResult : JSONArray =  JSONArray(result)
                 Log.i(viewOrders?.tag, "Try in onPostExecute JSON : $jsonResult")
-                viewOrders?.createTable(2,4, jsonResult);
+                var rowCount = jsonResult.length()
+                viewOrders?.createTable(rowCount,5, jsonResult);
             }
             catch (ex: java.lang.Exception) {
                 Log.e(viewOrders?.tag, "Error in onPostExecute " + ex.printStackTrace())
