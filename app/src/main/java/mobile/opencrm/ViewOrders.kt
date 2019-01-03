@@ -72,7 +72,7 @@ class ViewOrders : AppCompatActivity() {
 
                     if (j == 0 && i == 0) {
                         createPageHeader()
-                        createHeader(cols)
+                        createHeader(cols+1)
                     }
 
                     val rcText = TextView(this);

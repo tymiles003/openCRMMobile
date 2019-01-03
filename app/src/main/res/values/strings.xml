@@ -15,4 +15,7 @@
     <string name="column_3">Salesman</string>
     <string name="column_4">Cost</string>
     <string name="column_5">Status</string>
+    <string name="order_complete_status">Order Updated. Redirected to View Orders...Please wait</string>
+    <string name="update_failed_status">Failed to update.</string>
+    <string name="update_in_progress">Updating..</string>
 </resources>

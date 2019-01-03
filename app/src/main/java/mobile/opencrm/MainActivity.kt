@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
 
     fun goToOrderScreen() {
         val orderIntent = Intent(this, ViewOrders::class.java)
-
         startActivity(orderIntent);
     }
 }
