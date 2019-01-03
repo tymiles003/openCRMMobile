@@ -2,11 +2,15 @@ package mobile.opencrm
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceActivity
 import android.support.constraint.ConstraintLayout
+import android.support.constraint.Constraints
 import android.support.v4.content.ContextCompat.startActivity
 import android.util.Log
 import android.view.View
@@ -17,6 +21,7 @@ import android.widget.TableRow
 import android.widget.TextView
 import com.loopj.android.http.AsyncHttpClient.log
 import kotlinx.android.synthetic.main.activity_view_orders.*
+import mobile.opencrm.R.attr.colorAccent
 import mobile.opencrm.R.attr.colorPrimaryDark
 import mobile.opencrm.R.string.view_orders
 import org.json.JSONArray
@@ -72,10 +77,15 @@ class ViewOrders : AppCompatActivity() {
 
                     if (j == 0 && i == 0) {
                         createPageHeader()
-                        createHeader(cols+1)
+                        createHeader(cols)
                     }
 
                     val rcText = TextView(this);
+
+                    rcText.setPadding(10,10,10,10)
+                    rcText.setTextColor(Color.BLACK)
+                    rcText.setTypeface(Typeface.DEFAULT)
+                    rcText.setBackgroundColor(Color.WHITE)
 
                     var rowColResult: String = rowResult?.getString(j).toString()
                     Log.i(tag,"Output from GoogleSheet: $rowColResult")
@@ -101,13 +111,30 @@ class ViewOrders : AppCompatActivity() {
 
         for(j in 0 until cols) {
             val rcHeader = TextView(this);
+            rcHeader.setPadding(10,10,10,10)
+
+            //rcHeader.layoutParams.width = 0
+            rcHeader.setTextColor(Color.BLACK)
+            rcHeader.setTypeface(Typeface.DEFAULT_BOLD)
+            rcHeader.setBackgroundColor(Color.LTGRAY)
+
             /*rcHeader.width = 25*/
             when (j) {
-                0 -> rcHeader.text = getString(R.string.column_1)
-                1 -> rcHeader.text = getString(R.string.column_2)
-                2 -> rcHeader.text = getString(R.string.column_3)
-                3 -> rcHeader.text = getString(R.string.column_4)
-                3 -> rcHeader.text = getString(R.string.column_5)
+                0 -> {
+                    rcHeader.text = getString(R.string.column_1)
+                }
+                1 -> {
+                    rcHeader.text = getString(R.string.column_2)
+                }
+                2 -> {
+                    rcHeader.text = getString(R.string.column_3)
+                }
+                3 -> {
+                    rcHeader.text = getString(R.string.column_4)
+                }
+                4 -> {
+                    rcHeader.text = getString(R.string.column_5)
+                }
             }
             row.addView(rcHeader);
         }
@@ -118,6 +145,7 @@ class ViewOrders : AppCompatActivity() {
     fun createPageHeader() {
 
         val row = TableRow(this);
+        row.setPadding(0,5,0,10)
         row.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -125,9 +153,10 @@ class ViewOrders : AppCompatActivity() {
 
         val pageHeaderText = getString(R.string.view_orders);
         val pageHeader = TextView(this )
-        pageHeader.setTextColor(colorPrimaryDark)
-        pageHeader.setTextSize(24F)
+        pageHeader.setTextColor(colorAccent)
+        pageHeader.setTextSize(20F)
         pageHeader.setText(pageHeaderText)
+        pageHeader.setPadding(0,5,0,10)
         row.addView(pageHeader)
         tableLayout.addView(row)
     }
