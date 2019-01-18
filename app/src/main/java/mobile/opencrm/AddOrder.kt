@@ -31,6 +31,10 @@ class AddOrder : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_order)
 
+        val intent = getIntent()
+        val orderNo: String = intent.getStringExtra("orderId")
+        editCustomer.setText(orderNo)
+
         buttonAddOrder.setOnClickListener{
             var postParameters = "?customer=${editCustomer.text}&salesman=${editSalesman.text}&cost=${editCost.text}&status=${editStatus.text}";
             postToGSheet(this).execute(postParameters);

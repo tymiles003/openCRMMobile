@@ -2,31 +2,22 @@ package mobile.opencrm
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.AsyncTask
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.PreferenceActivity
-import android.support.constraint.ConstraintLayout
-import android.support.constraint.Constraints
-import android.support.v4.content.ContextCompat.startActivity
+import android.support.design.card.MaterialCardView
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.HorizontalScrollView
+import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
-import com.loopj.android.http.AsyncHttpClient.log
 import kotlinx.android.synthetic.main.activity_view_orders.*
-import mobile.opencrm.R.attr.colorAccent
-import mobile.opencrm.R.attr.colorPrimaryDark
-import mobile.opencrm.R.string.view_orders
+import mobile.opencrm.R.layout
 import org.json.JSONArray
-import org.json.JSONObject
-import org.w3c.dom.Text
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -40,127 +31,222 @@ class ViewOrders : AppCompatActivity() {
     private val tag: String = "MainActivity"
     private val spreadsheetResult: String? = null
 
-    val tableLayout by lazy { TableLayout(this) }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_view_orders)
-
-        val lp = TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        tableLayout.apply {
-            layoutParams = lp
-        }
-
+        setContentView(layout.activity_view_orders)
 
         loadData(this).execute();
     }
 
+    fun goToOrderDetail(orderNo: String) {
+        val orderIntent = Intent(this, AddOrder::class.java)
+        orderIntent.putExtra("orderId", orderNo)
+        startActivity(orderIntent);
+    }
+
+    @SuppressLint("ResourceAsColor")
     fun createTable(rows: Int, cols: Int, result: JSONArray?) {
 
         try {
             Log.i(tag,"Output from createTable: $result")
             for (i in 0 until rows) {
 
+                // Convert Input to JsonArray
                 var strResult = result?.getJSONArray(i).toString()
                 Log.i(tag,"Output from createTable jsonarray to string: $strResult")
-
                 val rowResult: JSONArray = JSONArray(strResult)
                 Log.i(tag,"Output from createTable string to jsonarray: $rowResult")
 
-                val row = TableRow(this);
-                row.layoutParams = ViewGroup.LayoutParams(
+                //Initialise layout
+                val orderCardView = MaterialCardView(this)
+                val tblLayout = TableLayout(this)
+                tblLayout.id = i
+                tblLayout.isStretchAllColumns = true
+
+                //setup layout details
+                val cvLayoutParam = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
+                orderCardView.layoutParams = cvLayoutParam
+                orderCardView.id = i;
+                orderCardView.useCompatPadding = true;
 
-                for (j in 0 until cols) {
+                tblLayout.layoutParams = TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.FILL_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT
+                )
 
-                    if (j == 0 && i == 0) {
-                        createPageHeader()
-                        createHeader(cols)
-                    }
+                val trLayoutParams = TableRow.LayoutParams(
+                    TableRow.LayoutParams.FILL_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT
+                )
 
-                    val rcText = TextView(this);
+                val txtVwTableRow = TableRow.LayoutParams(0,TableRow.LayoutParams.MATCH_PARENT, 1f)
 
-                    rcText.setPadding(10,10,10,10)
-                    rcText.setTextColor(Color.BLACK)
-                    rcText.setTypeface(Typeface.DEFAULT)
-                    rcText.setBackgroundColor(Color.WHITE)
+                //Setup 1st row
+                val  tblRow1 = TableRow(this)
+                tblRow1.layoutParams = trLayoutParams
+                tblRow1.weightSum=2f
 
-                    var rowColResult: String = rowResult?.getString(j).toString()
-                    Log.i(tag,"Output from GoogleSheet: $rowColResult")
-                    rcText.text = rowColResult
-                    row.addView(rcText);
+                //Order No
+                val txtOrderNo = TextView(this)
+                txtOrderNo.text = rowResult[0].toString()
+                txtOrderNo.layoutParams = txtVwTableRow
+                txtOrderNo.setPadding(30,40,0,40)
+                txtOrderNo.setTextColor(Color.BLACK)
+                txtOrderNo.width= 0
+                tblRow1.addView(txtOrderNo)
+
+
+                //Salesman
+                val txtSalesperson = TextView(this)
+                txtSalesperson.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_person_black_24dp, 0, 0, 0)
+                txtSalesperson.text = rowResult[2].toString()
+                txtSalesperson.layoutParams = txtVwTableRow
+                txtSalesperson.setPadding(0,40,30,40)
+                txtSalesperson.setTextColor(Color.BLACK)
+                txtSalesperson.gravity = Gravity.CENTER_VERTICAL
+                txtSalesperson.width= 0
+                tblRow1.addView(txtSalesperson)
+
+                tblLayout.addView(tblRow1)
+
+                //Setup 2nd row
+                val  tblRow2 = TableRow(this)
+                tblRow2.layoutParams = trLayoutParams
+                tblRow2.weightSum=2f
+
+                //Customer
+                val txtCustomer = TextView(this)
+                //txtCustomer.setTypeface(Typeface.DEFAULT_BOLD)
+                txtCustomer.setTextSize(23F)
+                txtCustomer.text = rowResult[1].toString()
+                val txtVwTableSpanRow = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.MATCH_PARENT)
+                txtVwTableSpanRow.span = 2
+                txtCustomer.layoutParams = txtVwTableSpanRow
+                txtCustomer.setPadding(30,0,30,60)
+                txtCustomer.setTextColor(Color.BLACK)
+                tblRow2.addView(txtCustomer)
+
+                tblLayout.addView(tblRow2)
+
+
+                //Setup 3rd row
+                val  tblRow3 = TableRow(this)
+                tblRow3.layoutParams = trLayoutParams
+                tblRow3.weightSum=2f
+
+
+                //Cost
+                val txtCost = TextView(this)
+                txtCost.layoutParams = txtVwTableRow
+                txtCost.setPadding(0,40,30,40)
+                txtCost.text = "Rs." + rowResult[3].toString()
+                txtCost.setPadding(30,40,0,40)
+                txtCost.width = 0
+                txtCost.setTextColor( Color.GRAY)
+                tblRow3.addView(txtCost)
+
+                //Status
+                val txtStatus = TextView(this)
+                txtStatus.text = rowResult[4].toString()
+                txtStatus.layoutParams = txtVwTableRow
+                txtStatus.setPadding(0,40,30,40)
+                txtStatus.width  =0
+                txtStatus.setTextColor(Color.parseColor("#ff6600"))
+                tblRow3.addView(txtStatus)
+
+                tblLayout.addView(tblRow3)
+
+                //Setup 4th row
+                val  tblRow4 = TableRow(this)
+                tblRow4.layoutParams = TableRow.LayoutParams(
+                    TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT
+                )
+                tblRow4.setBackgroundColor(Color.parseColor("#e4e4e4"))
+                tblRow4.weightSum=2f
+
+                val btnVwTableRow = TableRow.LayoutParams( TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                btnVwTableRow.width = 0
+
+                //Cancel Button
+                val buttonCancel = Button(this  )
+                buttonCancel.setBackgroundColor(Color.TRANSPARENT)
+                buttonCancel.setTextColor(Color.parseColor("#e55b70"))
+                buttonCancel.layoutParams = btnVwTableRow
+                buttonCancel.text = "Cancel"
+                buttonCancel.setOnClickListener{
+                    goToOrderDetail(rowResult[0].toString())
                 }
-                tableLayout.addView(row);
+                tblRow4.addView(buttonCancel)
+
+                //Update Button
+                val buttonUpdate = Button(this  )
+                buttonUpdate.setBackgroundColor(Color.TRANSPARENT)
+                buttonUpdate.setTextColor(Color.parseColor("#3039dd"))
+                buttonUpdate.layoutParams = btnVwTableRow
+                buttonUpdate.text = "Update"
+                buttonUpdate.setOnClickListener{
+                    goToOrderDetail(rowResult[0].toString())
+                }
+                tblRow4.addView(buttonUpdate)
+
+
+                /*//Mark as Cancel Button
+                val buttonCancel =  ImageButton(this)
+                buttonCancel.layoutParams = btnVwTableRow
+                buttonCancel.adjustViewBounds = true
+                buttonCancel.scaleType = ImageView.ScaleType.FIT_XY
+                buttonCancel.setBackgroundResource(R.drawable.ic_cancel_black_24dp)
+                tblRow4.addView(buttonCancel)
+
+                //Mark as Complete Button
+                val buttonComplete = ImageButton(this)
+                buttonComplete.adjustViewBounds = true
+                buttonComplete.layoutParams = btnVwTableRow
+                buttonComplete.scaleType = ImageView.ScaleType.FIT_XY
+                buttonComplete.setBackgroundResource(R.drawable.ic_done_black_24dp)
+                tblRow4.addView(buttonComplete)*/
+//
+//                tblRow4.addView(buttonComplete)
+
+                tblLayout.addView(tblRow4)
+
+
+                /*
+
+
+
+                val cancelButton = MaterialButton(this)
+                cancelButton.text="CANCEL"
+//                cancelButton.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT, 1f)
+//                cancelButton.width = 0
+                //cancelButton.setTextColor( Color.parseColor("#fff"))
+                //cancelButton.setBackgroundColor(Color.parseColor("#fd6768"))
+                tblRow3.addView(cancelButton)
+
+                val markButton = MaterialButton(this)
+//                markButton.setTextColor( Color.parseColor("#fff"))
+                markButton.text="COMPLETE"
+//                markButton.layoutParams = TableRow.LayoutParams(0,TableRow.LayoutParams.WRAP_CONTENT, 1f)
+//                markButton.width = 0
+                //markButton.setBackgroundColor(Color.parseColor("#98cd65"))
+                tblRow3.addView(markButton)
+
+                tblLayout.addView(tblRow3)
+*/
+
+                orderCardView.addView(tblLayout)
+                linearLayout.addView(orderCardView)
+
             }
         } catch (ex: Exception) {
             Log.d(tag, "Error in createTable " + ex.message)
         }
         progressBar.visibility = View.GONE
-        horizontalView.addView(tableLayout)
     }
-
-    fun createHeader(cols: Int) {
-
-        val row = TableRow(this);
-        row.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-
-        for(j in 0 until cols) {
-            val rcHeader = TextView(this);
-            rcHeader.setPadding(10,10,10,10)
-
-            //rcHeader.layoutParams.width = 0
-            rcHeader.setTextColor(Color.BLACK)
-            rcHeader.setTypeface(Typeface.DEFAULT_BOLD)
-            rcHeader.setBackgroundColor(Color.LTGRAY)
-
-            /*rcHeader.width = 25*/
-            when (j) {
-                0 -> {
-                    rcHeader.text = getString(R.string.column_1)
-                }
-                1 -> {
-                    rcHeader.text = getString(R.string.column_2)
-                }
-                2 -> {
-                    rcHeader.text = getString(R.string.column_3)
-                }
-                3 -> {
-                    rcHeader.text = getString(R.string.column_4)
-                }
-                4 -> {
-                    rcHeader.text = getString(R.string.column_5)
-                }
-            }
-            row.addView(rcHeader);
-        }
-        tableLayout.addView(row)
-    }
-
-
-    fun createPageHeader() {
-
-        val row = TableRow(this);
-        row.setPadding(0,5,0,10)
-        row.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-
-        val pageHeaderText = getString(R.string.view_orders);
-        val pageHeader = TextView(this )
-        pageHeader.setTextColor(colorAccent)
-        pageHeader.setTextSize(20F)
-        pageHeader.setText(pageHeaderText)
-        pageHeader.setPadding(0,5,0,10)
-        row.addView(pageHeader)
-        tableLayout.addView(row)
-    }
-
 
     @SuppressLint("StaticFieldLeak")
     class loadData(private var viewOrders: ViewOrders?) : AsyncTask<String, String, String>() {
