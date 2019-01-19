@@ -1,23 +1,18 @@
-package mobile.opencrm
+package mobile.opencrmpkg
+
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat.startActivity
-import android.util.Log
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
-import android.widget.Toast.makeText
 import kotlinx.android.synthetic.main.activity_add_order.*
-import mobile.opencrm.R.id.*
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.lang.ref.WeakReference
-import java.net.HttpURLConnection
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
@@ -31,16 +26,29 @@ class AddOrder : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_order)
 
-        val intent = getIntent()
-        val orderNo: String = intent.getStringExtra("orderId")
-        editCustomer.setText(orderNo)
-
         buttonAddOrder.setOnClickListener{
-            var postParameters = "?customer=${editCustomer.text}&salesman=${editSalesman.text}&cost=${editCost.text}&status=${editStatus.text}";
+            var postParameters = "?customer=${textCustomerVal.text}&salesman=${editSalesman.text}&cost=${editCost.text}&status=${editStatus.text}&notify=1";
             postToGSheet(this).execute(postParameters);
         }
 
 
+    }
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+/*
+        val clearActivity: Intent
+        clearActivity = Intent(this, AddOrder::class.java)
+        clearActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        clearActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(clearActivity)
+
+
+        val orderIntent = Intent(this, ViewOrders::class.java)
+        startActivity(orderIntent)
+    */
     }
 
     companion object {
@@ -120,7 +128,7 @@ class AddOrder : AppCompatActivity() {
                 activity.progressBar.visibility = View.GONE
                 activity.buttonAddOrder.isEnabled = true
 
-                activity.editCustomer.text = null
+                activity.textCustomerVal.text = null
                 activity.editStatus.text = null
                 activity.editCost.text = null
                 activity.editSalesman.text = null

@@ -1,4 +1,4 @@
-package mobile.opencrm
+package mobile.opencrmpkg
 
 import org.junit.Test
 

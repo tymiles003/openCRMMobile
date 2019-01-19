@@ -1,4 +1,4 @@
-package mobile.opencrm
+package mobile.opencrmpkg
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,17 +6,14 @@ import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.card.MaterialCardView
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import kotlinx.android.synthetic.main.activity_view_orders.*
-import mobile.opencrm.R.layout
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStream
@@ -25,22 +22,58 @@ import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
 
+
+
 class ViewOrders : AppCompatActivity() {
 
     public var gC = getBaseContext();
     private val tag: String = "MainActivity"
     private val spreadsheetResult: String? = null
+    private var exit: Boolean = false;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout.activity_view_orders)
+        setContentView(R.layout.activity_view_orders)
 
         loadData(this).execute();
     }
 
-    fun goToOrderDetail(orderNo: String) {
-        val orderIntent = Intent(this, AddOrder::class.java)
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        if (exit) {
+
+            var clearActivity: Intent
+            clearActivity = Intent(this, ViewOrders::class.java)
+            clearActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(clearActivity)
+
+            clearActivity = Intent(this, AddOrder::class.java)
+            clearActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(clearActivity)
+
+            clearActivity = Intent(this, UpdateOrder::class.java)
+            clearActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(clearActivity)
+
+            var mainActivity: Intent
+            mainActivity = Intent(this, MainActivity::class.java)
+            startActivity(mainActivity)
+
+
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.", Toast.LENGTH_SHORT).show();
+            exit = true;
+        }
+
+    }
+
+    fun goToOrderDetail(orderNo: String, cost: String, status: String, salesPerson: String, customerName: String) {
+        val orderIntent = Intent(this, UpdateOrder::class.java)
         orderIntent.putExtra("orderId", orderNo)
+        orderIntent.putExtra("cost", cost)
+        orderIntent.putExtra("status", status)
+        orderIntent.putExtra("salesPerson", salesPerson)
+        orderIntent.putExtra("customerName", customerName)
         startActivity(orderIntent);
     }
 
@@ -178,7 +211,9 @@ class ViewOrders : AppCompatActivity() {
                 buttonCancel.layoutParams = btnVwTableRow
                 buttonCancel.text = "Cancel"
                 buttonCancel.setOnClickListener{
-                    goToOrderDetail(rowResult[0].toString())
+                    //goToOrderDetail(rowResult[0].toString())
+                    view -> Snackbar.make(view, "Development in progress", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
                 }
                 tblRow4.addView(buttonCancel)
 
@@ -189,7 +224,13 @@ class ViewOrders : AppCompatActivity() {
                 buttonUpdate.layoutParams = btnVwTableRow
                 buttonUpdate.text = "Update"
                 buttonUpdate.setOnClickListener{
-                    goToOrderDetail(rowResult[0].toString())
+                    goToOrderDetail(
+                        rowResult[0].toString(),
+                        rowResult[3].toString(),
+                        rowResult[4].toString(),
+                        rowResult[2].toString(),
+                        rowResult[1].toString()
+                    )
                 }
                 tblRow4.addView(buttonUpdate)
 

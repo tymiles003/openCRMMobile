@@ -7,19 +7,19 @@ apply plugin: 'kotlin-android-extensions'
 android {
     signingConfigs {
         config {
-            keyAlias 'openCRM'
+            keyAlias 'key0'
             keyPassword 'india1010'
-            storeFile file('/home/vignesh/AndroidStudioProjects/openCRM.jks')
+            storeFile file('/home/vignesh/Android/OpenCRM.jks')
             storePassword 'india1010'
         }
     }
     compileSdkVersion 28
     defaultConfig {
-        applicationId "mobile.opencrm"
+        applicationId "mobile.opencrmpkg"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

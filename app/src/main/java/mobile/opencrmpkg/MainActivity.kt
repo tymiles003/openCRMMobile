@@ -1,4 +1,4 @@
-package mobile.opencrm
+package mobile.opencrmpkg
 
 import android.content.Intent
 import android.os.Bundle
@@ -38,6 +38,10 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
     fun toastMe(view: View) {

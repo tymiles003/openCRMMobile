@@ -1,4 +1,4 @@
-package mobile.opencrm
+package mobile.opencrmpkg
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("mobile.opencrm", appContext.packageName)
+        assertEquals("mobile.opencrmpkg", appContext.packageName)
     }
 }

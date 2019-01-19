@@ -1,6 +1,4 @@
-package mobile.opencrm
-
-import android.widget.TableRow
+package mobile.opencrmpkg
 
 class CommonActivities {
     fun createTable(rows: Int, Cols: Int, result: String) {

@@ -18,4 +18,6 @@
     <string name="order_complete_status">Order Updated. Redirected to View Orders...Please wait</string>
     <string name="update_failed_status">Failed to update.</string>
     <string name="update_in_progress">Updating..</string>
+    <string name="update_order_heading">Update Order</string>
+    <string name="update_order_button">Update Order</string>
 </resources>
